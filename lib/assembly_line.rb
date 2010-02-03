@@ -3,6 +3,8 @@ require 'assembly_line/registry'
 require 'assembly_line/constructor'
 
 module AssemblyLine
+  VERSION = "0.1.0".freeze
+
   def self.define(name, &block)
     Registry.add(name, block)
   end
