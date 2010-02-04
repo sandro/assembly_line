@@ -3,11 +3,39 @@ require 'spec_helper'
 describe AssemblyLine::Constructor do
   let(:code_block) do
     lambda do
+      depends_on :drinks
+
       let(:host) { :rochelle }
       let(:attendees) { [] }
     end
   end
   let(:constructor) { AssemblyLine::Constructor.new(:gathering, code_block) }
+  let(:context) { mock('context', :let => nil, :depends_on => nil) }
+  let(:options) { {:depends_on => :location} }
+
+  describe "#assemble" do
+    before do
+      constructor.stub(:depends_on => nil)
+    end
+    it "persists context" do
+      constructor.assemble(context, options)
+      constructor.rspec_context.should == context
+    end
+
+    it "persists context" do
+      constructor.assemble(context, options)
+      constructor.options.should == options
+    end
+
+    it "evaluates the code block" do
+      context.should_receive(:let).twice
+      constructor.assemble(context, options)
+    end
+
+    it "returns itself" do
+      constructor.assemble(context, options).should == constructor
+    end
+  end
 
   describe "#invoke" do
     context "no arguments provided" do
@@ -26,6 +54,22 @@ describe AssemblyLine::Constructor do
       it "calls the 'host' method followed by the 'attendees' method" do
         constructor.should_receive(:invoke_in_setup).with(:host, :attendees)
         constructor.invoke :host, :attendees
+      end
+    end
+  end
+
+  describe "#depends_on" do
+    context "declared in the assembly" do
+      it "attempts to assemble the 'drinks' dependency" do
+        AssemblyLine.should_receive(:assemble).with(:drinks, context)
+        constructor.assemble(context, {})
+      end
+    end
+
+    context "passed in from options" do
+      it "attempts to assemble the 'location' assembly" do
+        AssemblyLine.should_receive(:assemble).with(:location, context)
+        constructor.assemble(context, options)
       end
     end
   end
