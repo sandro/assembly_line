@@ -5,7 +5,23 @@ describe "AssemblyLine in practice" do
 
   class Party < Struct.new(:host, :attendees); end
 
+  AssemblyLine.define(:before_block) do
+    before(:each) do
+      @feedback = "before called"
+    end
+  end
+
+  AssemblyLine.define(:location) do
+    let(:location) { "123 main st." }
+  end
+
+  AssemblyLine.define(:drinks) do
+    let(:drinks) { [:gin, :vodka] }
+  end
+
   AssemblyLine.define(:party) do
+    depends_on :drinks
+
     let(:host) { :rochelle }
     let(:attendees) { [:nick, :ellis, :coach] }
     let(:party) { @party = Party.new(host, attendees) }
@@ -37,6 +53,39 @@ describe "AssemblyLine in practice" do
       it "changed the host to 'bob'" do
         party.host.should == :bob
       end
+    end
+  end
+
+  describe "dependencies" do
+    context "loading the built-in dependency" do
+      Assemble(:party)
+      it "loads the 'drinks' dependency when loading the party assembly" do
+        party
+        drinks.should == [:gin, :vodka]
+      end
+    end
+
+    context "overriding the dependency" do
+      Assemble(:party, :depends_on => :location)
+
+      it "loads the 'location' assembly line when loading the party assembly" do
+        party
+        location.should == "123 main st."
+      end
+
+      it "does not load the built-in 'drinks' dependency" do
+        party
+        expect do
+          drinks
+        end.to raise_error(NameError)
+      end
+    end
+  end
+
+  describe "before blocks" do
+    Assemble(:before_block)
+    it "invoked the before block" do
+      @feedback.should == "before called"
     end
   end
 end
