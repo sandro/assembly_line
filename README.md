@@ -20,7 +20,7 @@ Edit your *spec/spec_helper.rb*
 	
 Define an AssemblyLine
 
-	Assembly.define(:user_with_payment_address) do
+	AssemblyLine.define(:user_with_payment_address) do
 	  let(:user) { Factory(:user)}
 	  let(:payment_address) { Factory(:payment_address, :user => user) }
 	end
@@ -29,6 +29,13 @@ Example
 -------
 	
 Place your AssemblyLine definitions in *spec/support/assemblies.rb*
+
+	class Party < Struct.new(:host, :attendees)
+	  attr_writer :drinks
+	  def drinks
+	    @drinks ||= []
+	  end
+	end
 
 	AssemblyLine.define(:drinks) do
 	  let(:drinks) { [:gin, :vodka] }
