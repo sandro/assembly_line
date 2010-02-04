@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "AssemblyLine functional test" do
+describe "AssemblyLine in practice" do
   extend AssemblyLine
 
   class Party < Struct.new(:host, :attendees); end
