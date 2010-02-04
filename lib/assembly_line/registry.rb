@@ -11,7 +11,11 @@ module AssemblyLine
     end
 
     def locate(name)
-      constructors[name] || raise(ArgumentError, "AssemblyLine could not find definition #{name.inspect}")
+      constructors[name] || raise(ArgumentError, "AssemblyLine could not find definition for: '#{name.inspect}'")
+    end
+
+    def clear
+      constructors.clear
     end
 
     protected
