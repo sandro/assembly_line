@@ -5,13 +5,13 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "assembly_line"
-    gem.summary = %Q{Modularize your state set up for rspec}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{Modularize setup blocks for rspec}
+    gem.description = %Q{Assembly Line allows you to group together a series of rspec `let` statements which can later be evaluated to set up a specific state for your specs.}
     gem.email = "sandro.turriate@gmail.com"
     gem.homepage = "http://github.com/sandro/assembly_line"
     gem.authors = ["Sandro Turriate"]
-    gem.add_development_dependency "rspec", ">= 1.2.9"
-    gem.add_development_dependency "yard", ">= 0"
+    gem.add_development_dependency "rspec", "1.2.9"
+    gem.add_development_dependency "yard", "0.5.3"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
