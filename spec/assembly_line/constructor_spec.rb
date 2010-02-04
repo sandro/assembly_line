@@ -3,13 +3,8 @@ require 'spec_helper'
 describe AssemblyLine::Constructor do
   let(:code_block) do
     lambda do
-      def host
-        :bob
-      end
-
-      def attendees
-        []
-      end
+      let(:host) { :rochelle }
+      let(:attendees) { [] }
     end
   end
   let(:constructor) { AssemblyLine::Constructor.new(:gathering, code_block) }
@@ -22,7 +17,7 @@ describe AssemblyLine::Constructor do
       end
     end
 
-    context "argument(s) provided" do
+    context "arguments provided" do
       it "calls the 'host' method" do
         constructor.should_receive(:invoke_in_setup).with(:host)
         constructor.invoke :host
