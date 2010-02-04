@@ -1,13 +1,81 @@
 Assembly Line
 =============
 
-Gather all of your state together into blocks and invoke them before running a set of specs.
+Assembly Line allows you to group together a series of rspec `let` statements which can later be evaluated to set up a specific state for your specs. It's an excellent compliment to factory_girl because you can use your factories to build up each component, then use AssemblyLine to bring them all together.
+
+As a system grows in complexity, more objects are required to set up the necessary state to write tests. Sometimes you'll need to write a test that requires access to the beginning, middle, and end of a very large hierarchy, and AssemblyLine can expose each part of the hierarchy that you care about.  
+
+Installation
+------------
+    gem install assembly_line
+
+Edit your *spec/spec_helper.rb*  
+
+    require 'assembly_line' # unnecessary if you've used config.gem 'assembly_line'
+    require 'spec/support/assemblies' # unnecessary if your spec_helper already requires spec/support/*
+
+    Spec::Runner.configure do |config|
+	  config.extend AssemblyLine
+	end
+	
+Define an AssemblyLine
+
+	Assembly.define(:user_with_payment_address) do
+	  let(:user) { Factory(:user)}
+	  let(:payment_address) { Factory(:payment_address, :user => user) }
+	end
+	
+Example
+-------
+	
+Place your AssemblyLine definitions in *spec/support/assemblies.rb*
+
+	AssemblyLine.define(:drinks) do
+	  let(:drinks) { [:gin, :vodka] }
+	end
+
+	AssemblyLine.define(:party) do
+	  depends_on :drinks
+
+	  let(:host) { :rochelle }
+	  let(:attendees) { [:nick, :ellis, :coach] }
+	  let(:party) { @party = Party.new(host, attendees) }
+	  let(:party_crasher) { attendees << :crasher; :crasher }
+	end
+	
+Use your AssemblyLine in a test
+
+	describe "README example" do
+	  context "attendees" do
+	    Assemble(:party)
+
+	    it "does not count the host as an attendee" do
+	      party.attendees.should_not include(host)
+	    end
+	  end
+
+	  context "party crasher" do
+	    Assemble(:party).invoke(:party_crasher)
+
+	    it "exemplifies method invocation after assembly" do
+	      party.attendees.should include(:crasher)
+	    end
+	  end
+
+	  context "drinks" do
+	    Assemble(:party)
+
+	    it "does not include the list of standard drinks" do
+	      party.drinks.should_not include(drinks)
+	    end
+	  end
+	end
 
 Thanks!
 -------
 
-- l4rk     (initial spike using modules and including them in rspec context)
-- veezus   (code contributions, introduced modular setups)
+- l4rk     (initial spike declaring modules and including them in the rspec context)
+- veezus   (code contributions, introduced modular design / dependencies)
 - bigtiger (named the project)
 - leshill  (support and testing)
 
