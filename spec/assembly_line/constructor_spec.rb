@@ -10,7 +10,7 @@ describe AssemblyLine::Constructor do
     end
   end
   let(:constructor) { AssemblyLine::Constructor.new(:gathering, code_block) }
-  let(:context) { mock('context', :let => nil, :depends_on => nil) }
+  let(:rspec_context) { mock('rspec_context', :let => nil, :depends_on => nil) }
   let(:options) { {:depends_on => :location} }
 
   describe "#assemble" do
@@ -18,22 +18,22 @@ describe AssemblyLine::Constructor do
       constructor.stub(:depends_on => nil)
     end
     it "persists context" do
-      constructor.assemble(context, options)
-      constructor.rspec_context.should == context
+      constructor.assemble(rspec_context, options)
+      constructor.rspec_context.should == rspec_context
     end
 
     it "persists context" do
-      constructor.assemble(context, options)
+      constructor.assemble(rspec_context, options)
       constructor.options.should == options
     end
 
     it "evaluates the code block" do
-      context.should_receive(:let).twice
-      constructor.assemble(context, options)
+      rspec_context.should_receive(:let).twice
+      constructor.assemble(rspec_context, options)
     end
 
     it "returns itself" do
-      constructor.assemble(context, options).should == constructor
+      constructor.assemble(rspec_context, options).should == constructor
     end
   end
 
@@ -61,15 +61,15 @@ describe AssemblyLine::Constructor do
   describe "#depends_on" do
     context "declared in the assembly" do
       it "attempts to assemble the 'drinks' dependency" do
-        AssemblyLine.should_receive(:assemble).with(:drinks, context)
-        constructor.assemble(context, {})
+        AssemblyLine.should_receive(:assemble).with(:drinks, rspec_context)
+        constructor.assemble(rspec_context, {})
       end
     end
 
     context "passed in from options" do
       it "attempts to assemble the 'location' assembly" do
-        AssemblyLine.should_receive(:assemble).with(:location, context)
-        constructor.assemble(context, options)
+        AssemblyLine.should_receive(:assemble).with(:location, rspec_context)
+        constructor.assemble(rspec_context, options)
       end
     end
   end
