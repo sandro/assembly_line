@@ -20,11 +20,9 @@ module AssemblyLine
 
     def invoke(*methods)
       if methods.any?
-        methods.each do |name|
-          before_all name
-        end
+        invoke_in_setup *methods
       else
-        before_all name
+        invoke_in_setup name
       end
     end
 
@@ -39,8 +37,12 @@ module AssemblyLine
 
     protected
 
-    def before_all(method_name)
-      before(:all) { send(method_name) }
+    def invoke_in_setup(*methods)
+      before(:all) do
+        methods.each do |method_name|
+          send(method_name)
+        end
+      end
     end
   end
 end
