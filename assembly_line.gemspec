@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{assembly_line}
-  s.version = "0.1.0"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sandro Turriate"]
-  s.date = %q{2010-02-03}
+  s.date = %q{2010-02-08}
   s.description = %q{Assembly Line allows you to group together a series of rspec `let` statements which can later be evaluated to set up a specific state for your specs.}
   s.email = %q{sandro.turriate@gmail.com}
   s.extra_rdoc_files = [
@@ -18,17 +18,22 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
      ".gitignore",
+     "History.md",
      "MIT_LICENSE",
      "README.md",
      "Rakefile",
      "VERSION",
+     "assembly_line.gemspec",
      "lib/assembly_line.rb",
      "lib/assembly_line/constructor.rb",
+     "lib/assembly_line/global_context.rb",
      "lib/assembly_line/registry.rb",
      "spec/assembly_line/constructor_spec.rb",
+     "spec/assembly_line/global_context_spec.rb",
      "spec/assembly_line/registry_spec.rb",
      "spec/assembly_line_spec.rb",
      "spec/functional/assemble_spec.rb",
+     "spec/functional/global_context_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb"
   ]
@@ -39,9 +44,11 @@ Gem::Specification.new do |s|
   s.summary = %q{Modularize setup blocks for rspec}
   s.test_files = [
     "spec/assembly_line/constructor_spec.rb",
+     "spec/assembly_line/global_context_spec.rb",
      "spec/assembly_line/registry_spec.rb",
      "spec/assembly_line_spec.rb",
      "spec/functional/assemble_spec.rb",
+     "spec/functional/global_context_spec.rb",
      "spec/spec_helper.rb"
   ]
 
