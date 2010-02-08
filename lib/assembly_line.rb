@@ -4,7 +4,7 @@ require 'assembly_line/constructor'
 require 'assembly_line/global_context'
 
 module AssemblyLine
-  VERSION = "0.1.0".freeze
+  VERSION = "0.2.0".freeze
 
   def self.define(name, &block)
     Registry.add(name, block)
