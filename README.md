@@ -28,7 +28,7 @@ Define an AssemblyLine
 Example
 -------
 	
-Place your AssemblyLine definitions in *spec/support/assemblies.rb*
+### Place your AssemblyLine definitions in *spec/support/assemblies.rb*
 
 	class Party < Struct.new(:host, :attendees)
 	  attr_writer :drinks
@@ -50,7 +50,7 @@ Place your AssemblyLine definitions in *spec/support/assemblies.rb*
 	  let(:party_crasher) { attendees << :crasher; :crasher }
 	end
 	
-Use your AssemblyLine in a test
+### Use your AssemblyLine in a test
 
 	describe "README example" do
 	  context "attendees" do
@@ -77,6 +77,14 @@ Use your AssemblyLine in a test
 	    end
 	  end
 	end
+	
+### Use your AssemblyLine in an irb session
+
+	>> Assemble(:drinks)
+	=> #<AssemblyLine::Constructor:0x10049e958 @code_block=#<Proc:0x000000010049ea98@(irb):1>, @name=:drinks, @rspec_context=AssemblyLine::GlobalContext, @options={}>
+	>> drinks
+	=> [:gin, :vodka]
+	
 
 Thanks!
 -------
