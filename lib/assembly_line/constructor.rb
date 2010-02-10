@@ -2,9 +2,9 @@ module AssemblyLine
   class Constructor
     extend Forwardable
 
-    def_delegators :rspec_context, :let, :before
+    def_delegators :context, :let, :before
 
-    attr_reader :name, :code_block, :rspec_context, :options
+    attr_reader :name, :code_block, :context, :options
 
     def initialize(name, code_block)
       @name = name
@@ -13,7 +13,7 @@ module AssemblyLine
 
     def assemble(context, options)
       @options = options
-      @rspec_context = context
+      @context = context
       instance_eval(&code_block)
       self
     end
@@ -31,7 +31,7 @@ module AssemblyLine
         constructors = Array(options[:depends_on])
       end
       constructors.each do |name|
-        AssemblyLine.assemble(name, rspec_context)
+        AssemblyLine.assemble(name, context)
       end
     end
 
