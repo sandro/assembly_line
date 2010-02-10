@@ -4,7 +4,7 @@ require 'assembly_line/constructor'
 require 'assembly_line/generic_context'
 
 module AssemblyLine
-  VERSION = "0.2.0".freeze
+  VERSION = "0.2.1".freeze
   extend SingleForwardable
 
   def self.assemble(name, context, options={})
