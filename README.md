@@ -80,9 +80,12 @@ Example
 	
 ### Use your AssemblyLine in an irb session
 
+AssemblyLine works a little differently when using it in irb. Your `let` definitions will not be defined globally (see [e26a903](http://github.com/sandro/commit/e26a903)), instead you'll have to prefix all defined methods with `AssemblyLine`.
+
 	>> Assemble(:drinks)
 	=> #<AssemblyLine::Constructor:0x10049e958 @code_block=#<Proc:0x000000010049ea98@(irb):1>, @name=:drinks, @rspec_context=AssemblyLine::GlobalContext, @options={}>
-	>> drinks
+	>>
+	>> AssemblyLine.drinks # the `drinks` method is prefixed with AssemblyLine
 	=> [:gin, :vodka]
 	
 
@@ -92,7 +95,8 @@ Thanks!
 - l4rk     (initial spike declaring modules and including them in the rspec context)
 - veezus   (code contributions, introduced modular design / dependencies)
 - bigtiger (named the project)
-- leshill  (support and testing)
+- leshill  (support and testing, suggested irb support)
+- wgibbs   (suggested irb support)
 
 
 Note on Patches/Pull Requests
