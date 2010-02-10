@@ -1,12 +1,11 @@
 module AssemblyLine
-  module GlobalContext
-    extend self
+  class GenericContext
 
     def let(name, &block)
       define_method name do
         let_values[name] ||= instance_eval(&block)
       end
-      ::Kernel.def_delegator :assembly_line_global_context, name
+      AssemblyLine.def_delegator :generic_context, name
     end
 
     # there are no tests so just run the block
@@ -26,6 +25,8 @@ module AssemblyLine
       @let_values ||= {}
     end
 
-    attr_writer :context
+    def define_method(name, &block)
+      self.class.send(:define_method, name, &block)
+    end
   end
 end

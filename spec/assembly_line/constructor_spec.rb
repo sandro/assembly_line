@@ -19,7 +19,7 @@ describe AssemblyLine::Constructor do
     end
     it "persists context" do
       constructor.assemble(rspec_context, options)
-      constructor.rspec_context.should == rspec_context
+      constructor.context.should == rspec_context
     end
 
     it "persists context" do
