@@ -3,13 +3,13 @@ Assembly Line
 
 Assembly Line allows you to group together a series of rspec `let` statements which can later be evaluated to set up a specific state for your specs. It's an excellent compliment to factory_girl because you can use your factories to build up each component, then use AssemblyLine to bring them all together.
 
-As a system grows in complexity, more objects are required to set up the necessary state to write tests. Sometimes you'll need to write a test that requires access to the beginning, middle, and end of a very large hierarchy, and AssemblyLine can expose each part of the hierarchy that you care about.  
+As a system grows in complexity, more objects are required to set up the necessary state to write tests. Sometimes you'll need to write a test that requires access to the beginning, middle, and end of a very large hierarchy, and AssemblyLine can expose each part of the hierarchy that you care about.
 
 Installation
 ------------
     gem install assembly_line
 
-Edit your *spec/spec_helper.rb*  
+Edit your *spec/spec_helper.rb*
 
     require 'assembly_line' # unnecessary if you've used config.gem 'assembly_line'
     require 'spec/support/assemblies' # unnecessary if your spec_helper already requires spec/support/*
@@ -17,17 +17,17 @@ Edit your *spec/spec_helper.rb*
     Spec::Runner.configure do |config|
       config.extend AssemblyLine
     end
-    
+
 Define an AssemblyLine
 
     AssemblyLine.define(:user_with_payment_address) do
       let(:user) { Factory(:user)}
       let(:payment_address) { Factory(:payment_address, :user => user) }
     end
-    
+
 Example
 -------
-    
+
 ### Place your AssemblyLine definitions in *spec/support/assemblies.rb*
 
     class Party < Struct.new(:host, :attendees)
@@ -49,7 +49,7 @@ Example
       let(:party) { @party = Party.new(host, attendees) }
       let(:party_crasher) { attendees << :crasher; :crasher }
     end
-    
+
 ### Use your AssemblyLine in a test
 
     describe "README example" do
@@ -77,7 +77,7 @@ Example
         end
       end
     end
-    
+
 ### Use your AssemblyLine in an irb session
 
 AssemblyLine works a little differently when using it in irb. Your `let` definitions will not be defined globally (see [e26a903](http://github.com/sandro/assembly_line/commit/e26a903)), instead you'll have to prefix all defined methods with `AssemblyLine`.
@@ -87,7 +87,7 @@ AssemblyLine works a little differently when using it in irb. Your `let` definit
     >>
     >> AssemblyLine.drinks # the `drinks` method is prefixed with AssemblyLine
     => [:gin, :vodka]
-    
+
 
 Thanks!
 -------
