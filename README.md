@@ -11,8 +11,8 @@ Installation
 
 Edit your *spec/spec_helper.rb*
 
-    require 'assembly_line' # unnecessary if you've used config.gem 'assembly_line'
-    require 'spec/support/assemblies' # unnecessary if your spec_helper already requires spec/support/*
+    require 'assembly_line' # unnecessary if you have used config.gem 'assembly_line'
+    require 'spec/support/assemblies/*' # unnecessary if your spec_helper already requires spec/support/*
 
     Spec::Runner.configure do |config|
       config.extend AssemblyLine
@@ -28,7 +28,7 @@ Define an AssemblyLine
 Example
 -------
 
-### Place your AssemblyLine definitions in *spec/support/assemblies.rb*
+### Assuming you have the following class
 
     class Party < Struct.new(:host, :attendees)
       attr_writer :drinks
@@ -36,6 +36,8 @@ Example
         @drinks ||= []
       end
     end
+
+### Place your AssemblyLine definitions in *spec/support/assemblies/party_assembly.rb*
 
     AssemblyLine.define(:drinks) do
       let(:drinks) { [:gin, :vodka] }
@@ -52,10 +54,10 @@ Example
 
 ### Use your AssemblyLine in a test
 
-    describe "README example" do
-      context "attendees" do
-        Assemble(:party)
+    describe Party do
+      Assemble(:party)
 
+      context "attendees" do
         it "does not count the host as an attendee" do
           party.attendees.should_not include(host)
         end
@@ -70,8 +72,6 @@ Example
       end
 
       context "drinks" do
-        Assemble(:party)
-
         it "does not include the list of standard drinks" do
           party.drinks.should_not include(drinks)
         end
