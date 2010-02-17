@@ -21,7 +21,7 @@ Edit your *spec/spec_helper.rb*
 Define an AssemblyLine
 
     AssemblyLine.define(:user_with_payment_address) do
-      let(:user) { Factory(:user)}
+      let(:user) { Factory(:user) }
       let(:payment_address) { Factory(:payment_address, :user => user) }
     end
 
