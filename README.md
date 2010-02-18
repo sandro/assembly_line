@@ -11,8 +11,11 @@ Installation
 
 Edit your *spec/spec_helper.rb*
 
-    require 'assembly_line' # unnecessary if you have used config.gem 'assembly_line'
-    require 'spec/support/assemblies/*' # unnecessary if your spec_helper already requires spec/support/*
+    # unnecessary if you have used config.gem 'assembly_line'
+    require 'assembly_line'
+
+    # I put my definitions inside of spec/support/ because my spec_helper loads everything in that directory
+    require 'your_assembly_line_definitions'
 
     Spec::Runner.configure do |config|
       config.extend AssemblyLine
@@ -94,7 +97,7 @@ Thanks!
 
 - l4rk     (initial spike declaring modules and including them in the rspec context)
 - veezus   (code contributions, introduced modular design / dependencies)
-- bigtiger (named the project)
+- bigtiger (named the project, contributor)
 - leshill  (support and testing, suggested irb support)
 - wgibbs   (suggested irb support)
 
