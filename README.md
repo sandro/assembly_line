@@ -59,6 +59,9 @@ Example
 
     describe Party do
       Assemble(:party)
+      before do
+         puts "simple before block"
+      end
 
       context "attendees" do
         it "does not count the host as an attendee" do
@@ -85,6 +88,7 @@ Example
 
 AssemblyLine works a little differently when using it in irb. Your `let` definitions will not be defined globally (see [e26a903](http://github.com/sandro/assembly_line/commit/e26a903)), instead you'll have to prefix all defined methods with `AssemblyLine`.
 
+    >> require 'spec/support/assemblies'
     >> Assemble(:drinks)
     => #<AssemblyLine::Constructor:0x10049e958 @code_block=#<Proc:0x000000010049ea98@(irb):1>, @name=:drinks, @rspec_context=AssemblyLine::GlobalContext, @options={}>
     >>
