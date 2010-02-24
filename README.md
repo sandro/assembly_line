@@ -89,6 +89,62 @@ AssemblyLine works a little differently when using it in irb. Your `let` definit
     >> AssemblyLine.drinks # the `drinks` method is prefixed with AssemblyLine
     => [:gin, :vodka]
 
+Usage
+-----
+### let
+    AssemblyLine.define(:drinks) do
+      let(:drinks) { [:gin, :vodka] }
+    end
+
+This is the main usage of AssemblyLine. Let defines a method named after the first parameter and returns the return value of the provided block. Let memoizes the results so subsequent calls to the method will return the same result without re-running the block. Let delegates to rspec's implementation of let.
+
+
+### before
+    AssemblyLine.define(:killer_feature) do
+      let(:killer_feature) { KillerFeature.new }
+      before do
+        KillerFeature.delete_all
+        killer_feature.save!
+      end
+    end
+
+You can use rspec's before blocks within an AssemblyLine definition. This is a simple delegate so `before`, `before(:each)`, and `before(:all)` are all supported. You can even reference your `let` definitions within a before block.
+
+### depends_on
+    AssemblyLine.define(:user_with_expired_cc) do
+      let(:user) do
+        Factory(:confirmed_user).tap do |u|
+          u.credit_card.update_attribute :expiration_date, 1.year.ago
+        end
+      end
+    end
+
+    AssemblyLine.define(:subscription_with_invalid_cc) do
+      depends_on :user_with_expired_cc
+      let(:subscription) { Factory(:subscription, :user => user) }
+    end
+
+You can utilize other AssemblyLine definitions with `depends_on`. It takes a list of AssemblyLine definitions to load. This allows you to make modular AssemblyLines which can be used throughout your spec suite.
+
+### invoke
+    AssemblyLine.define(:drinks) do
+      let(:drinks) do
+        [ Factory(:drink, :name => :gin), Factory(:drink, :name => :vodka) ]
+      end
+    end
+
+    describe "Drinks#index" do
+      Assemble(:drinks).invoke
+      it "lists the drinks" do
+        visit drinks_path
+        response.should contain(drinks.first.name)
+        response.should contain(drinks.last.name)
+      end
+    end
+
+Invoke takes a list of method names to call after assembly. If no arguments are provided, AssemblyLine will call a method named after the AssemblyLine itself, in this case `drinks` will be called.
+
+Let definitions are lazily evaluated which means sometimes the expected data isn't available until it's too late. In the above example, if I didn't call `invoke` the drinks index page would be empty.
 
 Thanks!
 -------
