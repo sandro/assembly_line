@@ -142,7 +142,7 @@ You can utilize other AssemblyLine definitions with `depends_on`. It takes a lis
       end
     end
 
-Invoke takes a list of method names to call after assembly. If no arguments are provided, AssemblyLine will call a method named after the AssemblyLine itself, in this case `drinks` will be called.
+Invoke takes a list of method names to call after assembly. If no arguments are provided, AssemblyLine will call a method named after the AssemblyLine itself, in this case `drinks` will be called. Note, these methods are called in a `before(:all)` block.
 
 Let definitions are lazily evaluated which means sometimes the expected data isn't available until it's too late. In the above example, if I didn't call `invoke` the drinks index page would be empty.
 
