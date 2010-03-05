@@ -54,7 +54,7 @@ Example
     describe Party do
       Assemble(:party)
       before do
-         puts "simple before block"
+        puts "simple before block"
       end
 
       context "attendees" do
